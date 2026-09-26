@@ -130,7 +130,7 @@ class Game:
             self.ui.draw_win(self.screen)
         else:
             world = pygame.Surface((1600, SCREEN_HEIGHT))
-            world.fill(SKY)
+            world.fill(self.stage["info"]["background"])
 
             for platform in self.stage["platforms"]:
                 platform.draw(world)
