@@ -1,0 +1,19 @@
+"""Shared settings for Cloudbound Trail (temporary project title)."""
+
+SCREEN_WIDTH = 960
+SCREEN_HEIGHT = 540
+FPS = 60
+WINDOW_TITLE = "Cloudbound Trail - Python Platform Adventure"
+
+SKY = (155, 215, 245)
+GRASS = (70, 170, 85)
+DIRT = (125, 82, 50)
+PLAYER_COLOR = (65, 105, 225)
+ENEMY_COLOR = (225, 90, 105)
+COIN_COLOR = (250, 205, 55)
+WHITE = (250, 250, 250)
+DARK = (35, 45, 60)
+
+PLAYER_SPEED = 5
+JUMP_SPEED = -13
+GRAVITY = 0.65
