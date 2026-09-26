@@ -30,3 +30,9 @@ class UI:
         hint = self.font.render("Press R to restart", True, WHITE)
         surface.blit(title, title.get_rect(center=(surface.get_width() // 2, 235)))
         surface.blit(hint, hint.get_rect(center=(surface.get_width() // 2, 290)))
+
+    def draw_win(self, surface):
+        title = self.title_font.render("You Win!", True, WHITE)
+        hint = self.font.render("You finished both worlds! Press R to play again", True, WHITE)
+        surface.blit(title, title.get_rect(center=(surface.get_width() // 2, 235)))
+        surface.blit(hint, hint.get_rect(center=(surface.get_width() // 2, 290)))
