@@ -35,10 +35,12 @@ For a single shared computer/branch, make commits one at a time: one contributor
 
 ## Python concepts to show
 
-Variables and types appear in `settings.py`; conditions and loops in update/draw methods; functions in stage builders and game methods; lists in each stage's platforms/enemies/coins; tuples for positions/colors; dictionaries for stage/player state; sets for uniquely collected object IDs and cleared stages in a later phase; classes/objects in every game module; inheritance for enemy types and power-ups; imports across modules.
+Variables and types appear in `settings.py`; conditions and loops in update/draw methods; functions in stage builders and game methods; lists in each stage's platforms/enemies/coins; tuples for coin positions; dictionaries for stage information; classes/objects in every game module; imports across modules. Sets and inheritance are planned for later phases and are not implemented yet.
 
 ## Day 1 setup
 
 Install Python 3.10+ and Pygame: `python -m pip install -r requirements.txt`. Start the game with `python main.py`. Press Enter, move with arrows or A/D, and jump with Space, Up, or W. The code uses simple shapes so original art can be added later.
+
+**Integration note:** The patrol, jump, shooting-timer, and bullet ideas from the teammate's enemy prototype have been adapted into `enemy.py` and connected through `game.py`. The platformer keeps its own `main.py`; the teammate's standalone main loop was not copied over. The cat image dependency was replaced with original Pygame-drawn shapes, so the game does not need an `enemy.png` file. The integrated version also has three lives, a short hit cooldown, a game-over screen, and an `R` restart.
 
 Day 1 commit suggestion: `Day 1: add playable platformer foundation`.

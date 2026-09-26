@@ -1,4 +1,4 @@
-"""Small HUD and title screen helpers."""
+"""Start screen, game HUD, and game-over screen."""
 
 import pygame
 
@@ -10,8 +10,13 @@ class UI:
         self.font = pygame.font.Font(None, 30)
         self.title_font = pygame.font.Font(None, 58)
 
-    def draw_hud(self, surface, stage_name, coin_count):
-        text = self.font.render(f"{stage_name}     Coins: {coin_count}     Move: A/D or arrows | Jump: Space", True, DARK)
+    def draw_hud(self, surface, stage_name, coin_count, lives):
+        text = self.font.render(
+            f"{stage_name}     Coins: {coin_count}     Lives: {lives}     "
+            "Move: A/D or arrows | Jump: Space",
+            True,
+            DARK,
+        )
         surface.blit(text, (18, 16))
 
     def draw_start(self, surface):
@@ -19,3 +24,9 @@ class UI:
         hint = self.font.render("Press ENTER to begin", True, WHITE)
         surface.blit(title, title.get_rect(center=(surface.get_width() // 2, 220)))
         surface.blit(hint, hint.get_rect(center=(surface.get_width() // 2, 280)))
+
+    def draw_game_over(self, surface):
+        title = self.title_font.render("Game Over", True, WHITE)
+        hint = self.font.render("Press R to restart", True, WHITE)
+        surface.blit(title, title.get_rect(center=(surface.get_width() // 2, 235)))
+        surface.blit(hint, hint.get_rect(center=(surface.get_width() // 2, 290)))

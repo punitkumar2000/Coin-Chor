@@ -3,7 +3,14 @@
 TEAM_WORK = {
     "Person 1 - Engine and integration": ["game.Game", "game.Game.run", "main.Game"],
     "Person 2 - Player": ["player.Player", "player.Player.update"],
-    "Person 3 - Enemies and boss": ["enemy.Enemy", "levels.build_stage_one"],
+    "Person 3 - Enemies and boss": [
+        "enemy.Enemy",
+        "enemy.Bullet",
+        "enemy.Enemy.update",
+        "enemy.Enemy.shoot",
+        "enemy.Enemy.check_collision",
+        "game.Game.lose_life",
+    ],
     "Person 4 - Objects": ["objects.Platform", "objects.Coin"],
     "Person 5 - Stages and interface": ["levels.build_stage_one", "ui.UI"],
 }
