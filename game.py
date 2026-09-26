@@ -119,6 +119,36 @@ class Game:
             [(1538, 405), (1580, 420), (1538, 438)],
         )
 
+
+    def draw_scenery(self, world):
+        if self.stage_number == 1:
+            # Distant hills in Green Meadow
+            pygame.draw.ellipse(world, (125, 190, 120), (-100, 365, 650, 260))
+            pygame.draw.ellipse(world, (105, 175, 105), (400, 390, 750, 250))
+            pygame.draw.ellipse(world, (85, 155, 95), (950, 360, 750, 280))
+
+            # Clouds
+            for x, y in [(120, 115), (410, 175), (760, 95), (1190, 145), (1450, 80)]:
+                pygame.draw.ellipse(world, (240, 250, 255), (x, y + 8, 55, 22))
+                pygame.draw.circle(world, (240, 250, 255), (x + 18, y + 8), 16)
+                pygame.draw.circle(world, (240, 250, 255), (x + 38, y + 5), 20)
+        else:
+            # Stars in Moonlit Cave
+            stars = [(100, 80), (260, 145), (430, 65), (620, 125),
+                     (810, 75), (990, 150), (1190, 90), (1400, 135), (1530, 60)]
+            for x, y in stars:
+                pygame.draw.circle(world, (225, 225, 255), (x, y), 3)
+
+            # Hanging cave rocks
+            for x, width, height in [(80, 100, 75), (340, 130, 95),
+                                     (700, 110, 65), (1050, 140, 100),
+                                     (1390, 120, 80)]:
+                pygame.draw.polygon(
+                    world,
+                    (70, 58, 95),
+                    [(x, 0), (x + width, 0), (x + width // 2, height)],
+                )
+     
     def draw(self):
         self.screen.fill(SKY)
 
@@ -131,6 +161,7 @@ class Game:
         else:
             world = pygame.Surface((1600, SCREEN_HEIGHT))
             world.fill(self.stage["info"]["background"])
+            self.draw_scenery(world)
 
             for platform in self.stage["platforms"]:
                 platform.draw(world)
