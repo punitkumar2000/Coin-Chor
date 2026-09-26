@@ -77,9 +77,32 @@ class Enemy:
         return self.rect.colliderect(player_rect)
 
     def draw(self, surface):
-        pygame.draw.ellipse(surface, ENEMY_COLOR, self.rect)
-        eye_x = self.rect.centerx + (7 * self.direction)
-        pygame.draw.circle(surface, (255, 255, 255), (eye_x, self.rect.y + 10), 4)
-        pygame.draw.circle(surface, (35, 45, 60), (eye_x + self.direction, self.rect.y + 10), 2)
-        gun_x = self.rect.right if self.direction == 1 else self.rect.left - 10
-        pygame.draw.rect(surface, (80, 80, 80), (gun_x, self.rect.centery - 3, 10, 6))
+        x = self.rect.x
+        y = self.rect.y
+
+        # Tail
+        pygame.draw.lines(
+            surface, (205, 125, 65), False,
+            [(x + 5, y + 20), (x - 2, y + 24), (x - 4, y + 19)],
+            3,
+        )
+
+        # Body and paws
+        pygame.draw.ellipse(surface, (220, 135, 65), (x + 5, y + 12, 24, 16))
+        pygame.draw.ellipse(surface, (245, 190, 125), (x + 11, y + 17, 13, 9))
+        pygame.draw.ellipse(surface, (90, 65, 50), (x + 7, y + 25, 10, 5))
+        pygame.draw.ellipse(surface, (90, 65, 50), (x + 21, y + 25, 10, 5))
+
+        # Head and pointed ears
+        pygame.draw.polygon(surface, (220, 135, 65), [(x + 8, y + 12), (x + 7, y + 1), (x + 17, y + 8)])
+        pygame.draw.polygon(surface, (220, 135, 65), [(x + 18, y + 8), (x + 29, y + 1), (x + 27, y + 14)])
+        pygame.draw.ellipse(surface, (230, 150, 80), (x + 7, y + 6, 22, 19))
+        pygame.draw.polygon(surface, (235, 145, 150), [(x + 9, y + 6), (x + 9, y + 3), (x + 14, y + 7)])
+        pygame.draw.polygon(surface, (235, 145, 150), [(x + 21, y + 7), (x + 27, y + 3), (x + 26, y + 8)])
+
+        # Face
+        pygame.draw.ellipse(surface, (250, 220, 185), (x + 12, y + 15, 13, 7))
+        pygame.draw.circle(surface, (35, 45, 60), (x + 14, y + 13), 2)
+        pygame.draw.circle(surface, (35, 45, 60), (x + 23, y + 13), 2)
+        pygame.draw.circle(surface, (190, 80, 95), (x + 19, y + 18), 2)
+        pygame.draw.line(surface, (80, 65, 55), (x + 19, y + 19), (x + 19, y + 22), 1)

@@ -78,4 +78,37 @@ class Player:
             self.on_ground = False
 
     def draw(self, surface):
-        pygame.draw.rect(surface, PLAYER_COLOR, self.rect, border_radius=6)
+        x = self.rect.x
+        y = self.rect.y
+
+        # Tail
+        pygame.draw.lines(
+            surface, (145, 115, 95), False,
+            [(x + 9, y + 33), (x + 2, y + 37), (x + 1, y + 32)],
+            3,
+        )
+
+        # Body and feet
+        pygame.draw.ellipse(surface, (155, 145, 130), (x + 7, y + 20, 23, 20))
+        pygame.draw.ellipse(surface, (205, 190, 170), (x + 12, y + 25, 15, 11))
+        pygame.draw.ellipse(surface, (90, 80, 75), (x + 6, y + 38, 11, 7))
+        pygame.draw.ellipse(surface, (90, 80, 75), (x + 19, y + 38, 11, 7))
+
+        # Head and ears
+        pygame.draw.circle(surface, (155, 145, 130), (x + 12, y + 10), 7)
+        pygame.draw.circle(surface, (155, 145, 130), (x + 24, y + 10), 7)
+        pygame.draw.circle(surface, (215, 155, 155), (x + 12, y + 10), 4)
+        pygame.draw.circle(surface, (215, 155, 155), (x + 24, y + 10), 4)
+        pygame.draw.ellipse(surface, (175, 165, 150), (x + 7, y + 6, 23, 20))
+
+        # Face
+        pygame.draw.ellipse(surface, (225, 210, 190), (x + 10, y + 14, 18, 10))
+        pygame.draw.circle(surface, (35, 45, 60), (x + 15, y + 13), 2)
+        pygame.draw.circle(surface, (35, 45, 60), (x + 23, y + 13), 2)
+        pygame.draw.circle(surface, (205, 110, 125), (x + 19, y + 18), 2)
+
+        # Whiskers
+        pygame.draw.line(surface, (75, 70, 65), (x + 13, y + 19), (x + 2, y + 17), 1)
+        pygame.draw.line(surface, (75, 70, 65), (x + 13, y + 21), (x + 2, y + 23), 1)
+        pygame.draw.line(surface, (75, 70, 65), (x + 25, y + 19), (x + 33, y + 17), 1)
+        pygame.draw.line(surface, (75, 70, 65), (x + 25, y + 21), (x + 33, y + 23), 1)
