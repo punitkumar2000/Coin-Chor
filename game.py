@@ -108,6 +108,10 @@ class Game:
         for coin in self.stage["coins"]:
             if not coin.collected and self.player.rect.colliderect(coin.rect):
                 coin.collected = True
+        for powerup in self.stage.get("powerups", []):
+            if not powerup.collected and self.player.rect.colliderect(powerup.rect):
+                powerup.collected = True
+                self.player.speed_boost_timer = 300
 
         self.check_stage_exit()
 
@@ -194,6 +198,9 @@ class Game:
             for coin in self.stage["coins"]:
                 coin.draw(world)
 
+            for powerup in self.stage.get("powerups", []):
+                powerup.draw(world)
+
             for enemy in self.stage["enemies"]:
                 enemy.draw(world)
 
@@ -210,6 +217,7 @@ class Game:
                 self.stage["info"]["name"],
                 coin_count,
                 self.player_lives,
+                self.player.speed_boost_timer,
             )
 
         pygame.display.flip()

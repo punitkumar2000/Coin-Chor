@@ -16,17 +16,22 @@ class Player:
         self.rect = pygame.Rect(x, y, 34, 46)
         self.velocity_y = 0
         self.on_ground = False
+        self.speed_boost_timer = 0
 
     def update(self, keys, platforms):
         # Save the old position so we can tell which side hit a platform.
         previous_rect = self.rect.copy()
 
+        if self.speed_boost_timer > 0:
+            self.speed_boost_timer -= 1
+
+        move_speed = PLAYER_SPEED * 2 if self.speed_boost_timer > 0 else PLAYER_SPEED
         # Move left or right.
         move_x = 0
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            move_x -= PLAYER_SPEED
+            move_x -= move_speed
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            move_x += PLAYER_SPEED
+            move_x += move_speed
 
         self.rect.x += move_x
 

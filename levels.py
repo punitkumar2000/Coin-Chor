@@ -1,7 +1,7 @@
 """Stage layouts. The other two stages are added in later project days."""
 
 from enemy import Enemy
-from objects import Coin, Platform
+from objects import Coin, Platform, PowerUp
 
 
 def build_stage_one():
@@ -14,13 +14,14 @@ def build_stage_one():
         Platform(1170, 410, 170),
     ]
     coins = [Coin(x, y) for x, y in [(260, 370), (490, 300), (750, 370), (1060, 315), (1320, 375)]]
+    powerups = [PowerUp(740, 370)]
     enemies = [Enemy(560, 460, 520, 650)]
     stage_info = {
     "name": "Green Meadow",
     "number": 1,
     "background": (155, 215, 245),
     }
-    return {"platforms": platforms, "coins": coins, "enemies": enemies, "info": stage_info}
+    return {"platforms": platforms, "coins": coins, "powerups": powerups, "enemies": enemies, "info": stage_info}
 
 def build_stage_two():
     platforms = [

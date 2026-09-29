@@ -10,7 +10,7 @@ class UI:
         self.font = pygame.font.Font(None, 30)
         self.title_font = pygame.font.Font(None, 58)
 
-    def draw_hud(self, surface, stage_name, coin_count, lives):
+    def draw_hud(self, surface, stage_name, coin_count, lives, boost_timer=0):
         text = self.font.render(
             f"{stage_name}     Coins: {coin_count}     Lives: {lives}     "
             "Move: A/D or arrows | Jump: Space",
@@ -18,6 +18,15 @@ class UI:
             DARK,
         )
         surface.blit(text, (18, 16))
+
+        if boost_timer > 0:
+            seconds_left = (boost_timer + 59) // 60
+            boost_text = self.font.render(
+                f"Speed boost: {seconds_left}s",
+                True,
+                DARK,
+            )
+            surface.blit(boost_text, (18, 50))
 
     def draw_start(self, surface):
         title = self.title_font.render("JumpByte", True, WHITE)

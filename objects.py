@@ -22,3 +22,24 @@ class Coin:
     def draw(self, surface):
         if not self.collected:
             pygame.draw.circle(surface, COIN_COLOR, self.rect.center, 9)
+
+class PowerUp:
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x, y, 24, 24)
+        self.collected = False
+
+    def draw(self, surface):
+        if not self.collected:
+            pygame.draw.circle(surface, (250, 210, 55), self.rect.center, 12)
+            pygame.draw.polygon(
+                surface,
+                (85, 65, 35),
+                [
+                    (self.rect.x + 14, self.rect.y + 2),
+                    (self.rect.x + 8, self.rect.y + 13),
+                    (self.rect.x + 13, self.rect.y + 13),
+                    (self.rect.x + 10, self.rect.y + 22),
+                    (self.rect.x + 18, self.rect.y + 10),
+                    (self.rect.x + 13, self.rect.y + 10),
+                ],
+            )
