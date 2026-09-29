@@ -10,8 +10,8 @@ def build_stage_one():
         Platform(210, 405, 150),
         Platform(440, 335, 150),
         Platform(700, 405, 170),
-        Platform(1010, 350, 150),
-        Platform(1270, 410, 170),
+        Platform(920, 380, 150),
+        Platform(1170, 410, 170),
     ]
     coins = [Coin(x, y) for x, y in [(260, 370), (490, 300), (750, 370), (1060, 315), (1320, 375)]]
     enemies = [Enemy(560, 460, 520, 650)]
@@ -54,6 +54,47 @@ def build_stage_two():
     "name": "Moonlit Cave",
     "number": 2,
     "background": (45, 35, 75),
+    }
+
+    return {
+        "platforms": platforms,
+        "coins": coins,
+        "enemies": enemies,
+        "info": stage_info,
+    }
+
+def build_stage_three():
+    platforms = [
+        Platform(0, 490, 1600, 50),
+        Platform(170, 410, 140),
+        Platform(400, 340, 150),
+        Platform(660, 405, 150),
+        Platform(900, 330, 150),
+        Platform(1160, 400, 150),
+        Platform(1390, 335, 170),
+    ]
+
+    coins = [
+        Coin(x, y)
+        for x, y in [
+            (210, 375),
+            (445, 305),
+            (705, 370),
+            (945, 295),
+            (1205, 365),
+            (1440, 300),
+        ]
+    ]
+
+    enemies = [
+        Enemy(520, 460, 470, 620),
+        Enemy(1050, 460, 990, 1130),
+    ]
+
+    stage_info = {
+        "name": "Sunset Castle",
+        "number": 3,
+        "background": (112, 84, 126),
     }
 
     return {

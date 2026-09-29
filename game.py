@@ -2,7 +2,7 @@
 
 import pygame
 
-from levels import build_stage_one, build_stage_two
+from levels import build_stage_one, build_stage_two, build_stage_three
 from player import Player
 from settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, SKY, WINDOW_TITLE
 from ui import UI
@@ -64,11 +64,16 @@ class Game:
         if self.stage_number == 1:
             self.stage_number = 2
             self.stage = build_stage_two()
-            self.player = Player(60, 400)
-            self.bullets.clear()
-            self.camera_x = 0
+        elif self.stage_number == 2:
+            self.stage_number = 3
+            self.stage = build_stage_three()
         else:
             self.game_won = True
+            return
+
+        self.player = Player(60, 400)
+        self.bullets.clear()
+        self.camera_x = 0
 
     def update(self):
         if not self.started or self.game_over or self.game_won:
@@ -122,7 +127,7 @@ class Game:
 
     def draw_scenery(self, world):
         if self.stage_number == 1:
-            # Distant hills in Green Meadow
+            # Green Meadow hills
             pygame.draw.ellipse(world, (125, 190, 120), (-100, 365, 650, 260))
             pygame.draw.ellipse(world, (105, 175, 105), (400, 390, 750, 250))
             pygame.draw.ellipse(world, (85, 155, 95), (950, 360, 750, 280))
@@ -132,8 +137,9 @@ class Game:
                 pygame.draw.ellipse(world, (240, 250, 255), (x, y + 8, 55, 22))
                 pygame.draw.circle(world, (240, 250, 255), (x + 18, y + 8), 16)
                 pygame.draw.circle(world, (240, 250, 255), (x + 38, y + 5), 20)
-        else:
-            # Stars in Moonlit Cave
+
+        elif self.stage_number == 2:
+            # Moonlit Cave stars
             stars = [(100, 80), (260, 145), (430, 65), (620, 125),
                      (810, 75), (990, 150), (1190, 90), (1400, 135), (1530, 60)]
             for x, y in stars:
@@ -148,6 +154,25 @@ class Game:
                     (70, 58, 95),
                     [(x, 0), (x + width, 0), (x + width // 2, height)],
                 )
+
+        else:
+            # Sunset Castle in the distance
+            pygame.draw.ellipse(world, (135, 83, 110), (-80, 405, 700, 180))
+            pygame.draw.ellipse(world, (120, 70, 100), (700, 390, 950, 200))
+
+            # Castle walls and towers
+            pygame.draw.rect(world, (75, 53, 88), (260, 300, 280, 190))
+            pygame.draw.rect(world, (65, 46, 80), (300, 250, 65, 240))
+            pygame.draw.rect(world, (65, 46, 80), (435, 250, 65, 240))
+
+            # Tower roofs
+            pygame.draw.polygon(world, (55, 42, 72), [(285, 250), (380, 250), (332, 195)])
+            pygame.draw.polygon(world, (55, 42, 72), [(420, 250), (515, 250), (468, 195)])
+
+            # Glowing windows
+            pygame.draw.rect(world, (245, 190, 100), (325, 330, 28, 45))
+            pygame.draw.rect(world, (245, 190, 100), (445, 330, 28, 45))
+            pygame.draw.rect(world, (245, 190, 100), (380, 400, 40, 90))
      
     def draw(self):
         self.screen.fill(SKY)
