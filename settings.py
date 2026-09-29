@@ -1,9 +1,8 @@
-"""Shared settings for Cloudbound Trail (temporary project title)."""
 
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 540
 FPS = 60
-WINDOW_TITLE = "Cloudbound Trail - Python Platform Adventure"
+WINDOW_TITLE = "JumpByte - Python Platform Adventure"
 
 SKY = (155, 215, 245)
 GRASS = (70, 170, 85)
