@@ -17,6 +17,7 @@ class Player:
         self.velocity_y = 0
         self.on_ground = False
         self.speed_boost_timer = 0
+        self.is_moving = False
 
     def update(self, keys, platforms):
         # Save the old position so we can tell which side hit a platform.
@@ -42,7 +43,7 @@ class Player:
                     self.rect.right = platform.rect.left
                 elif move_x < 0:
                     self.rect.left = platform.rect.right
-
+        self.is_moving = move_x != 0 and self.rect.x != previous_rect.x
         # Keep the player inside the level.
         self.rect.left = max(0, self.rect.left)
         self.rect.right = min(1600, self.rect.right)
@@ -93,11 +94,20 @@ class Player:
             3,
         )
 
-        # Body and feet
+        # Body and animated feet
         pygame.draw.ellipse(surface, (155, 145, 130), (x + 7, y + 20, 23, 20))
         pygame.draw.ellipse(surface, (205, 190, 170), (x + 12, y + 25, 15, 11))
-        pygame.draw.ellipse(surface, (90, 80, 75), (x + 6, y + 38, 11, 7))
-        pygame.draw.ellipse(surface, (90, 80, 75), (x + 19, y + 38, 11, 7))
+
+        moving = getattr(self, "is_moving", False)
+        if moving:
+            step = (pygame.time.get_ticks() // 120) % 2
+            left_foot_y = y + 38 + (step * 2)
+            right_foot_y = y + 38 + ((1 - step) * 2)
+        else:
+            left_foot_y = right_foot_y = y + 38
+
+        pygame.draw.ellipse(surface, (90, 80, 75), (x + 6, left_foot_y, 11, 7))
+        pygame.draw.ellipse(surface, (90, 80, 75), (x + 19, right_foot_y, 11, 7))
 
         # Head and ears
         pygame.draw.circle(surface, (155, 145, 130), (x + 12, y + 10), 7)

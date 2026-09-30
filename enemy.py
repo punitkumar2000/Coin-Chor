@@ -87,11 +87,16 @@ class Enemy:
             3,
         )
 
-        # Body and paws
+        # Body and animated paws
         pygame.draw.ellipse(surface, (220, 135, 65), (x + 5, y + 12, 24, 16))
         pygame.draw.ellipse(surface, (245, 190, 125), (x + 11, y + 17, 13, 9))
-        pygame.draw.ellipse(surface, (90, 65, 50), (x + 7, y + 25, 10, 5))
-        pygame.draw.ellipse(surface, (90, 65, 50), (x + 21, y + 25, 10, 5))
+
+        step = (pygame.time.get_ticks() // 140) % 2
+        left_paw_y = y + 25 + (step * 2)
+        right_paw_y = y + 25 + ((1 - step) * 2)
+
+        pygame.draw.ellipse(surface, (90, 65, 50), (x + 7, left_paw_y, 10, 5))
+        pygame.draw.ellipse(surface, (90, 65, 50), (x + 21, right_paw_y, 10, 5))
 
         # Head and pointed ears
         pygame.draw.polygon(surface, (220, 135, 65), [(x + 8, y + 12), (x + 7, y + 1), (x + 17, y + 8)])

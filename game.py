@@ -124,11 +124,24 @@ class Game:
         )
 
     def draw_exit_gate(self, world):
+        # Gate pole and base
         pygame.draw.rect(world, (90, 70, 55), (1530, 405, 8, 85))
+        pygame.draw.rect(world, (145, 115, 80), (1527, 480, 14, 10))
+        pygame.draw.circle(world, (255, 220, 120), (1534, 402), 5)
+
+        # Gently waving flag
+        wave = (pygame.time.get_ticks() // 250) % 2
+        tip_x = 1580 if wave == 0 else 1573
+        middle_y = 421 if wave == 0 else 424
+
         pygame.draw.polygon(
             world,
             (245, 190, 65),
-            [(1538, 405), (1580, 420), (1538, 438)],
+            [(1538, 405), (tip_x, middle_y), (1538, 438)],
+        )
+        pygame.draw.line(
+            world, (255, 230, 145),
+            (1541, 411), (tip_x - 8, middle_y), 2,
         )
 
 
@@ -144,6 +157,20 @@ class Game:
                 pygame.draw.ellipse(world, (240, 250, 255), (x, y + 8, 55, 22))
                 pygame.draw.circle(world, (240, 250, 255), (x + 18, y + 8), 16)
                 pygame.draw.circle(world, (240, 250, 255), (x + 38, y + 5), 20)
+
+            # Small flowers in the meadow
+            for x, y, color in [
+                (70, 460, (255, 220, 90)),
+                (385, 465, (250, 130, 160)),
+                (610, 450, (255, 220, 90)),
+                (920, 465, (250, 130, 160)),
+                (1170, 455, (255, 220, 90)),
+                (1510, 465, (250, 130, 160)),
+            ]:
+                pygame.draw.line(world, (45, 125, 65), (x, y), (x, y + 14), 2)
+                pygame.draw.circle(world, color, (x, y), 4)
+                pygame.draw.circle(world, (255, 245, 220), (x - 4, y), 3)
+                pygame.draw.circle(world, (255, 245, 220), (x + 4, y), 3)
 
         elif self.stage_number == 2:
             # Moonlit Cave stars
@@ -161,6 +188,20 @@ class Game:
                     (70, 58, 95),
                     [(x, 0), (x + width, 0), (x + width // 2, height)],
                 )
+            # Glowing cave crystals
+            for x, y, color in [
+                (180, 455, (90, 235, 245)),
+                (560, 450, (175, 125, 255)),
+                (900, 460, (90, 235, 245)),
+                (1280, 450, (175, 125, 255)),
+            ]:
+                pygame.draw.polygon(
+                    world,
+                    color,
+                    [(x, y + 22), (x - 10, y), (x - 4, y + 3),
+                     (x, y - 14), (x + 5, y + 2), (x + 11, y + 22)],
+                )
+                pygame.draw.line(world, (235, 250, 255), (x, y - 8), (x - 3, y + 10), 2)
 
         else:
             # Sunset Castle in the distance
@@ -180,6 +221,22 @@ class Game:
             pygame.draw.rect(world, (245, 190, 100), (325, 330, 28, 45))
             pygame.draw.rect(world, (245, 190, 100), (445, 330, 28, 45))
             pygame.draw.rect(world, (245, 190, 100), (380, 400, 40, 90))
+
+            #Setting sun and castle flags
+            pygame.draw.circle(world, (255, 175, 105), (1350, 190), 58)
+            pygame.draw.circle(world, (255, 205, 125), (1350, 190), 43)
+
+            pygame.draw.line(world, (225, 205, 175), (332, 178), (332, 205), 3)
+            pygame.draw.polygon(
+                world, (235, 95, 110),
+                [(334, 180), (365, 188), (334, 197)],
+            )
+
+            pygame.draw.line(world, (225, 205, 175), (468, 178), (468, 205), 3)
+            pygame.draw.polygon(
+                world, (100, 190, 220),
+                [(470, 180), (500, 188), (470, 197)],
+            )
      
     def draw(self):
         self.screen.fill(SKY)
