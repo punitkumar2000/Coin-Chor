@@ -29,6 +29,7 @@ class Game:
         self.hit_cooldown = 0
         self.game_over = False
         self.game_won = False
+        self.paused = False
         self.camera_x = 0
 
     def handle_events(self):
@@ -38,6 +39,8 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.started = True
+                elif event.key == pygame.K_p and self.started and not self.game_over and not self.game_won:
+                    self.paused = not self.paused
                 elif event.key == pygame.K_r and (self.game_over or self.game_won):
                     self.reset_stage()
                     self.started = True
@@ -76,7 +79,7 @@ class Game:
         self.camera_x = 0
 
     def update(self):
-        if not self.started or self.game_over or self.game_won:
+        if not self.started or self.game_over or self.game_won or self.paused:
             return
 
         keys = pygame.key.get_pressed()
@@ -187,6 +190,8 @@ class Game:
             self.ui.draw_game_over(self.screen)
         elif self.game_won:
             self.ui.draw_win(self.screen)
+        elif self.paused:
+            self.ui.draw_pause(self.screen)
         else:
             world = pygame.Surface((1600, SCREEN_HEIGHT))
             world.fill(self.stage["info"]["background"])
