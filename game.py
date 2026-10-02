@@ -24,6 +24,7 @@ class Game:
         self.stage_number = 1
         self.stage = build_stage_one()
         self.player = Player(60, 400)
+        self.respawn_position = (60, 400)
         self.bullets = []
         self.stomp_effect_timer = 0
         self.stomp_effect_pos = (0, 0)
@@ -32,6 +33,7 @@ class Game:
         self.game_over = False
         self.game_won = False
         self.paused = False
+        self.exit_locked = False
         self.camera_x = 0
 
     def handle_events(self):
@@ -41,9 +43,16 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.started = True
-                elif event.key == pygame.K_p and self.started and not self.game_over and not self.game_won:
+                elif (
+                    event.key == pygame.K_p
+                    and self.started
+                    and not self.game_over
+                    and not self.game_won
+                ):
                     self.paused = not self.paused
-                elif event.key == pygame.K_r and (self.game_over or self.game_won):
+                elif event.key == pygame.K_r and (
+                    self.game_over or self.game_won
+                ):
                     self.reset_stage()
                     self.started = True
 
@@ -53,17 +62,22 @@ class Game:
 
         self.player_lives -= 1
         self.hit_cooldown = 75
-        self.player.rect.topleft = (60, 400)
+        self.player.rect.topleft = self.respawn_position
         self.player.velocity_y = 0
 
         if self.player_lives <= 0:
             self.game_over = True
 
     def check_stage_exit(self):
-        all_coins_collected = all(coin.collected for coin in self.stage["coins"])
+        all_coins_collected = all(
+            coin.collected for coin in self.stage["coins"]
+        )
         reached_exit = self.player.rect.right >= 1540
 
-        if not reached_exit:
+        # Exit par pahunchne ke baad bhi coins baaki hain toh gate locked rahega.
+        self.exit_locked = reached_exit and not all_coins_collected
+
+        if not reached_exit or not all_coins_collected:
             return
 
         if self.stage_number == 1:
@@ -77,17 +91,30 @@ class Game:
             return
 
         self.player = Player(60, 400)
+        self.respawn_position = (60, 400)
         self.bullets.clear()
+        self.stomp_effect_timer = 0
+        self.exit_locked = False
         self.camera_x = 0
 
     def update(self):
-        if not self.started or self.game_over or self.game_won or self.paused:
+        if (
+            not self.started
+            or self.game_over
+            or self.game_won
+            or self.paused
+        ):
             return
+
         if self.stomp_effect_timer > 0:
             self.stomp_effect_timer -= 1
 
         keys = pygame.key.get_pressed()
         self.player.update(keys, self.stage["platforms"])
+
+        # X=800 cross karne par checkpoint activate hota hai.
+        if self.player.rect.centerx >= 800:
+            self.respawn_position = (760, 450)
 
         if self.hit_cooldown > 0:
             self.hit_cooldown -= 1
@@ -99,7 +126,7 @@ class Game:
                 self.bullets.append(enemy.shoot(self.player.rect))
 
             if enemy.check_collision(self.player.rect) and self.hit_cooldown == 0:
-                # Neeche girte hue cat ke upar land kiya toh cat defeat hogi
+                # Neeche girte hue cat ke upar land kiya toh cat defeat hogi.
                 if (
                     self.player.velocity_y > 0
                     and self.player.rect.bottom < enemy.rect.centery
@@ -125,6 +152,7 @@ class Game:
         for coin in self.stage["coins"]:
             if not coin.collected and self.player.rect.colliderect(coin.rect):
                 coin.collected = True
+
         for powerup in self.stage.get("powerups", []):
             if not powerup.collected and self.player.rect.colliderect(powerup.rect):
                 powerup.collected = True
@@ -134,7 +162,10 @@ class Game:
 
         self.camera_x = max(
             0,
-            min(self.player.rect.centerx - SCREEN_WIDTH // 2, 1600 - SCREEN_WIDTH),
+            min(
+                self.player.rect.centerx - SCREEN_WIDTH // 2,
+                1600 - SCREEN_WIDTH,
+            ),
         )
 
     def draw_exit_gate(self, world):
@@ -154,10 +185,12 @@ class Game:
             [(1538, 405), (tip_x, middle_y), (1538, 438)],
         )
         pygame.draw.line(
-            world, (255, 230, 145),
-            (1541, 411), (tip_x - 8, middle_y), 2,
+            world,
+            (255, 230, 145),
+            (1541, 411),
+            (tip_x - 8, middle_y),
+            2,
         )
-
 
     def draw_scenery(self, world):
         if self.stage_number == 1:
@@ -167,10 +200,22 @@ class Game:
             pygame.draw.ellipse(world, (85, 155, 95), (950, 360, 750, 280))
 
             # Clouds
-            for x, y in [(120, 115), (410, 175), (760, 95), (1190, 145), (1450, 80)]:
-                pygame.draw.ellipse(world, (240, 250, 255), (x, y + 8, 55, 22))
-                pygame.draw.circle(world, (240, 250, 255), (x + 18, y + 8), 16)
-                pygame.draw.circle(world, (240, 250, 255), (x + 38, y + 5), 20)
+            for x, y in [
+                (120, 115),
+                (410, 175),
+                (760, 95),
+                (1190, 145),
+                (1450, 80),
+            ]:
+                pygame.draw.ellipse(
+                    world, (240, 250, 255), (x, y + 8, 55, 22)
+                )
+                pygame.draw.circle(
+                    world, (240, 250, 255), (x + 18, y + 8), 16
+                )
+                pygame.draw.circle(
+                    world, (240, 250, 255), (x + 38, y + 5), 20
+                )
 
             # Small flowers in the meadow
             for x, y, color in [
@@ -181,27 +226,51 @@ class Game:
                 (1170, 455, (255, 220, 90)),
                 (1510, 465, (250, 130, 160)),
             ]:
-                pygame.draw.line(world, (45, 125, 65), (x, y), (x, y + 14), 2)
+                pygame.draw.line(
+                    world, (45, 125, 65), (x, y), (x, y + 14), 2
+                )
                 pygame.draw.circle(world, color, (x, y), 4)
-                pygame.draw.circle(world, (255, 245, 220), (x - 4, y), 3)
-                pygame.draw.circle(world, (255, 245, 220), (x + 4, y), 3)
+                pygame.draw.circle(
+                    world, (255, 245, 220), (x - 4, y), 3
+                )
+                pygame.draw.circle(
+                    world, (255, 245, 220), (x + 4, y), 3
+                )
 
         elif self.stage_number == 2:
             # Moonlit Cave stars
-            stars = [(100, 80), (260, 145), (430, 65), (620, 125),
-                     (810, 75), (990, 150), (1190, 90), (1400, 135), (1530, 60)]
+            stars = [
+                (100, 80),
+                (260, 145),
+                (430, 65),
+                (620, 125),
+                (810, 75),
+                (990, 150),
+                (1190, 90),
+                (1400, 135),
+                (1530, 60),
+            ]
             for x, y in stars:
                 pygame.draw.circle(world, (225, 225, 255), (x, y), 3)
 
             # Hanging cave rocks
-            for x, width, height in [(80, 100, 75), (340, 130, 95),
-                                     (700, 110, 65), (1050, 140, 100),
-                                     (1390, 120, 80)]:
+            for x, width, height in [
+                (80, 100, 75),
+                (340, 130, 95),
+                (700, 110, 65),
+                (1050, 140, 100),
+                (1390, 120, 80),
+            ]:
                 pygame.draw.polygon(
                     world,
                     (70, 58, 95),
-                    [(x, 0), (x + width, 0), (x + width // 2, height)],
+                    [
+                        (x, 0),
+                        (x + width, 0),
+                        (x + width // 2, height),
+                    ],
                 )
+
             # Glowing cave crystals
             for x, y, color in [
                 (180, 455, (90, 235, 245)),
@@ -212,10 +281,18 @@ class Game:
                 pygame.draw.polygon(
                     world,
                     color,
-                    [(x, y + 22), (x - 10, y), (x - 4, y + 3),
-                     (x, y - 14), (x + 5, y + 2), (x + 11, y + 22)],
+                    [
+                        (x, y + 22),
+                        (x - 10, y),
+                        (x - 4, y + 3),
+                        (x, y - 14),
+                        (x + 5, y + 2),
+                        (x + 11, y + 22),
+                    ],
                 )
-                pygame.draw.line(world, (235, 250, 255), (x, y - 8), (x - 3, y + 10), 2)
+                pygame.draw.line(
+                    world, (235, 250, 255), (x, y - 8), (x - 3, y + 10), 2
+                )
 
         else:
             # Sunset Castle in the distance
@@ -228,30 +305,40 @@ class Game:
             pygame.draw.rect(world, (65, 46, 80), (435, 250, 65, 240))
 
             # Tower roofs
-            pygame.draw.polygon(world, (55, 42, 72), [(285, 250), (380, 250), (332, 195)])
-            pygame.draw.polygon(world, (55, 42, 72), [(420, 250), (515, 250), (468, 195)])
+            pygame.draw.polygon(
+                world, (55, 42, 72), [(285, 250), (380, 250), (332, 195)]
+            )
+            pygame.draw.polygon(
+                world, (55, 42, 72), [(420, 250), (515, 250), (468, 195)]
+            )
 
             # Glowing windows
             pygame.draw.rect(world, (245, 190, 100), (325, 330, 28, 45))
             pygame.draw.rect(world, (245, 190, 100), (445, 330, 28, 45))
             pygame.draw.rect(world, (245, 190, 100), (380, 400, 40, 90))
 
-            #Setting sun and castle flags
+            # Setting sun and castle flags
             pygame.draw.circle(world, (255, 175, 105), (1350, 190), 58)
             pygame.draw.circle(world, (255, 205, 125), (1350, 190), 43)
 
-            pygame.draw.line(world, (225, 205, 175), (332, 178), (332, 205), 3)
+            pygame.draw.line(
+                world, (225, 205, 175), (332, 178), (332, 205), 3
+            )
             pygame.draw.polygon(
-                world, (235, 95, 110),
+                world,
+                (235, 95, 110),
                 [(334, 180), (365, 188), (334, 197)],
             )
 
-            pygame.draw.line(world, (225, 205, 175), (468, 178), (468, 205), 3)
+            pygame.draw.line(
+                world, (225, 205, 175), (468, 178), (468, 205), 3
+            )
             pygame.draw.polygon(
-                world, (100, 190, 220),
+                world,
+                (100, 190, 220),
                 [(470, 180), (500, 188), (470, 197)],
             )
-     
+
     def draw(self):
         self.screen.fill(SKY)
 
@@ -271,6 +358,21 @@ class Game:
             for platform in self.stage["platforms"]:
                 platform.draw(world)
 
+            # Gray checkpoint becomes green after activation.
+            flag_color = (
+                (65, 210, 130)
+                if self.respawn_position != (60, 400)
+                else (185, 185, 195)
+            )
+
+            pygame.draw.rect(world, (90, 70, 55), (796, 350, 6, 55))
+            pygame.draw.polygon(
+                world,
+                flag_color,
+                [(802, 351), (836, 361), (802, 373)],
+            )
+            pygame.draw.circle(world, (255, 245, 190), (799, 348), 4)
+
             for coin in self.stage["coins"]:
                 coin.draw(world)
 
@@ -279,10 +381,10 @@ class Game:
 
             for enemy in self.stage["enemies"]:
                 enemy.draw(world)
+
             if self.stomp_effect_timer > 0:
                 effect_age = 18 - self.stomp_effect_timer
                 radius = 8 + effect_age * 2
-
                 pygame.draw.circle(
                     world,
                     (255, 230, 120),
@@ -298,7 +400,9 @@ class Game:
             self.player.draw(world)
             self.screen.blit(world, (-self.camera_x, 0))
 
-            coin_count = sum(1 for coin in self.stage["coins"] if coin.collected)
+            coin_count = sum(
+                1 for coin in self.stage["coins"] if coin.collected
+            )
             self.ui.draw_hud(
                 self.screen,
                 self.stage["info"]["name"],
@@ -306,6 +410,18 @@ class Game:
                 self.player_lives,
                 self.player.speed_boost_timer,
             )
+
+            # Exit par coins baaki hon toh player ko reason dikhega.
+            if self.exit_locked:
+                message = self.ui.font.render(
+                    "Collect all coins to unlock the exit!",
+                    True,
+                    (255, 255, 255),
+                )
+                message_rect = message.get_rect(
+                    center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 42)
+                )
+                self.screen.blit(message, message_rect)
 
         pygame.display.flip()
 
