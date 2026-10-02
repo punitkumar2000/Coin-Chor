@@ -88,14 +88,22 @@ class Game:
         if self.hit_cooldown > 0:
             self.hit_cooldown -= 1
 
-        for enemy in self.stage["enemies"]:
+        for enemy in self.stage["enemies"][:]:
             enemy.update()
 
             if enemy.ready_to_shoot():
                 self.bullets.append(enemy.shoot(self.player.rect))
 
             if enemy.check_collision(self.player.rect) and self.hit_cooldown == 0:
-                self.lose_life()
+                # Neeche girte hue cat ke upar land kiya toh cat defeat hogi
+                if (
+                    self.player.velocity_y > 0
+                    and self.player.rect.bottom < enemy.rect.centery
+                ):
+                    self.stage["enemies"].remove(enemy)
+                    self.player.velocity_y = -10
+                else:
+                    self.lose_life()
 
         for bullet in self.bullets:
             bullet.update()
