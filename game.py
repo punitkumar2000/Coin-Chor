@@ -72,12 +72,17 @@ class Game:
         all_coins_collected = all(
             coin.collected for coin in self.stage["coins"]
         )
+        boss_alive = any(
+            getattr(enemy, "is_boss", False)
+            for enemy in self.stage["enemies"]
+        )
         reached_exit = self.player.rect.right >= 1540
 
-        # Exit par pahunchne ke baad bhi coins baaki hain toh gate locked rahega.
-        self.exit_locked = reached_exit and not all_coins_collected
+        self.exit_locked = reached_exit and (
+            not all_coins_collected or boss_alive
+        )
 
-        if not reached_exit or not all_coins_collected:
+        if not reached_exit or not all_coins_collected or boss_alive:
             return
 
         if self.stage_number == 1:
@@ -126,15 +131,22 @@ class Game:
                 self.bullets.append(enemy.shoot(self.player.rect))
 
             if enemy.check_collision(self.player.rect) and self.hit_cooldown == 0:
-                # Neeche girte hue cat ke upar land kiya toh cat defeat hogi.
+                # Neeche girte hue enemy ke upar land kiya toh stomp hoga
                 if (
                     self.player.velocity_y > 0
                     and self.player.rect.bottom < enemy.rect.centery
                 ):
                     self.stomp_effect_pos = enemy.rect.center
                     self.stomp_effect_timer = 18
-                    self.stage["enemies"].remove(enemy)
                     self.player.velocity_y = -10
+                    self.hit_cooldown = 18
+
+                    if getattr(enemy, "is_boss", False):
+                        enemy.health -= 1
+                        if enemy.health <= 0:
+                            self.stage["enemies"].remove(enemy)
+                    else:
+                        self.stage["enemies"].remove(enemy)
                 else:
                     self.lose_life()
 
@@ -413,8 +425,21 @@ class Game:
 
             # Exit par coins baaki hon toh player ko reason dikhega.
             if self.exit_locked:
+                boss_alive = any(
+                    getattr(enemy, "is_boss", False)
+                    for enemy in self.stage["enemies"]
+                )
+                coins_missing = coin_count < len(self.stage["coins"])
+
+                if boss_alive and coins_missing:
+                    message_text = "Collect all coins and defeat the boss!"
+                elif boss_alive:
+                    message_text = "Defeat the boss to unlock the exit!"
+                else:
+                    message_text = "Collect all coins to unlock the exit!"
+
                 message = self.ui.font.render(
-                    "Collect all coins to unlock the exit!",
+                    message_text,
                     True,
                     (255, 255, 255),
                 )

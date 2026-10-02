@@ -111,3 +111,68 @@ class Enemy:
         pygame.draw.circle(surface, (35, 45, 60), (x + 23, y + 13), 2)
         pygame.draw.circle(surface, (190, 80, 95), (x + 19, y + 18), 2)
         pygame.draw.line(surface, (80, 65, 55), (x + 19, y + 19), (x + 19, y + 22), 1)
+
+class Boss(Enemy):
+    """A larger cat enemy with health, based on the regular Enemy class."""
+
+    def __init__(self, x, y, left_bound, right_bound):
+        super().__init__(x, y, left_bound, right_bound)
+
+        self.rect = pygame.Rect(x, y, 64, 48)
+        self.ground_y = y
+        self.speed = 2
+        self.jump_delay = 90
+        self.shoot_delay = 70
+
+        self.max_health = 3
+        self.health = self.max_health
+        self.is_boss = True
+
+    def draw(self, surface):
+        x = self.rect.x
+        y = self.rect.y
+
+        # Tail and large body
+        pygame.draw.lines(
+            surface,
+            (130, 55, 55),
+            False,
+            [(x + 12, y + 34), (x + 2, y + 40), (x, y + 32)],
+            4,
+        )
+        pygame.draw.ellipse(surface, (170, 65, 65), (x + 8, y + 21, 50, 26))
+        pygame.draw.ellipse(surface, (220, 135, 105), (x + 18, y + 29, 30, 14))
+
+        # Paws
+        pygame.draw.ellipse(surface, (90, 45, 45), (x + 12, y + 42, 17, 6))
+        pygame.draw.ellipse(surface, (90, 45, 45), (x + 40, y + 42, 17, 6))
+
+        # Ears and head
+        pygame.draw.polygon(
+            surface, (170, 65, 65),
+            [(x + 10, y + 24), (x + 12, y + 2), (x + 29, y + 17)],
+        )
+        pygame.draw.polygon(
+            surface, (170, 65, 65),
+            [(x + 39, y + 17), (x + 56, y + 2), (x + 58, y + 25)],
+        )
+        pygame.draw.ellipse(surface, (195, 80, 75), (x + 10, y + 10, 48, 34))
+
+        # Face
+        pygame.draw.ellipse(surface, (245, 205, 175), (x + 20, y + 24, 28, 14))
+        pygame.draw.circle(surface, (255, 235, 100), (x + 25, y + 22), 4)
+        pygame.draw.circle(surface, (255, 235, 100), (x + 43, y + 22), 4)
+        pygame.draw.circle(surface, (35, 30, 35), (x + 25, y + 22), 2)
+        pygame.draw.circle(surface, (35, 30, 35), (x + 43, y + 22), 2)
+        pygame.draw.polygon(
+            surface, (55, 35, 40),
+            [(x + 31, y + 31), (x + 38, y + 31), (x + 35, y + 35)],
+        )
+
+        # Boss health bar
+        bar_width = 64
+        pygame.draw.rect(surface, (45, 30, 35), (x, y - 12, bar_width, 7))
+        health_width = int(bar_width * self.health / self.max_health)
+        pygame.draw.rect(
+            surface, (80, 220, 100), (x, y - 12, health_width, 7)
+        )

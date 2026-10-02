@@ -1,6 +1,6 @@
 """Stage layouts. The other two stages are added in later project days."""
 
-from enemy import Enemy
+from enemy import Boss, Enemy
 from objects import Coin, Platform, PowerUp
 
 
@@ -89,7 +89,7 @@ def build_stage_three():
 
     enemies = [
         Enemy(520, 460, 470, 620),
-        Enemy(1050, 460, 990, 1130),
+        Boss(850, 442, 850, 1100),
     ]
 
     stage_info = {
