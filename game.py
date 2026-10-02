@@ -25,6 +25,8 @@ class Game:
         self.stage = build_stage_one()
         self.player = Player(60, 400)
         self.bullets = []
+        self.stomp_effect_timer = 0
+        self.stomp_effect_pos = (0, 0)
         self.player_lives = 3
         self.hit_cooldown = 0
         self.game_over = False
@@ -81,6 +83,8 @@ class Game:
     def update(self):
         if not self.started or self.game_over or self.game_won or self.paused:
             return
+        if self.stomp_effect_timer > 0:
+            self.stomp_effect_timer -= 1
 
         keys = pygame.key.get_pressed()
         self.player.update(keys, self.stage["platforms"])
@@ -100,6 +104,8 @@ class Game:
                     self.player.velocity_y > 0
                     and self.player.rect.bottom < enemy.rect.centery
                 ):
+                    self.stomp_effect_pos = enemy.rect.center
+                    self.stomp_effect_timer = 18
                     self.stage["enemies"].remove(enemy)
                     self.player.velocity_y = -10
                 else:
@@ -273,6 +279,17 @@ class Game:
 
             for enemy in self.stage["enemies"]:
                 enemy.draw(world)
+            if self.stomp_effect_timer > 0:
+                effect_age = 18 - self.stomp_effect_timer
+                radius = 8 + effect_age * 2
+
+                pygame.draw.circle(
+                    world,
+                    (255, 230, 120),
+                    self.stomp_effect_pos,
+                    radius,
+                    3,
+                )
 
             for bullet in self.bullets:
                 bullet.draw(world)
