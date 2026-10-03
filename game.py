@@ -117,6 +117,15 @@ class Game:
             self.stomp_effect_timer -= 1
 
         keys = pygame.key.get_pressed()
+        jump_pressed = (
+            keys[pygame.K_SPACE]
+            or keys[pygame.K_UP]
+            or keys[pygame.K_w]
+        )
+
+        if jump_pressed and self.player.on_ground:
+            self.sounds.play_jump()
+
         self.player.update(keys, self.stage["platforms"])
 
         # X=800 cross karne par checkpoint activate hota hai.

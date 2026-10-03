@@ -32,6 +32,12 @@ class SoundEffects:
                 duration=0.16,
                 volume=0.45,
             )
+            self.jump_sound = self._make_tone(
+                start_frequency=420,
+                end_frequency=760,
+                duration=0.10,
+                volume=0.25,
+            )
             self.enabled = True
         except pygame.error:
             # The game can still run if the computer has no audio device.
@@ -61,3 +67,7 @@ class SoundEffects:
     def play_stomp(self):
         if self.enabled:
             self.stomp_sound.play()
+
+    def play_jump(self):
+        if self.enabled:
+            self.jump_sound.play()
