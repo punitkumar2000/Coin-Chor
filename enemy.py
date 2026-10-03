@@ -128,6 +128,14 @@ class Boss(Enemy):
         self.health = self.max_health
         self.is_boss = True
 
+    def update(self):
+        if self.health == 1:
+            self.speed = 3
+            self.shoot_delay = 45
+            self.jump_delay = 60
+
+        super().update()
+
     def draw(self, surface):
         x = self.rect.x
         y = self.rect.y
