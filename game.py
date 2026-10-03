@@ -63,6 +63,7 @@ class Game:
             return
 
         self.player_lives -= 1
+        self.sounds.play_damage()
         self.hit_cooldown = 75
         self.player.rect.topleft = self.respawn_position
         self.player.velocity_y = 0

@@ -71,3 +71,12 @@ class SoundEffects:
     def play_jump(self):
         if self.enabled:
             self.jump_sound.play()
+            self.damage_sound = self._make_tone(
+                start_frequency=520,
+                end_frequency=140,
+                duration=0.22,
+                volume=0.35,
+            )
+    def play_damage(self):
+        if self.enabled:
+            self.damage_sound.play()
