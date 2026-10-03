@@ -6,11 +6,13 @@ from levels import build_stage_one, build_stage_two, build_stage_three
 from player import Player
 from settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, SKY, WINDOW_TITLE
 from ui import UI
+from sound_effects import SoundEffects
 
 
 class Game:
     def __init__(self):
         pygame.init()
+        self.sounds = SoundEffects()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption(WINDOW_TITLE)
         self.clock = pygame.time.Clock()
@@ -138,6 +140,7 @@ class Game:
                 ):
                     self.stomp_effect_pos = enemy.rect.center
                     self.stomp_effect_timer = 18
+                    self.sounds.play_stomp()
                     self.player.velocity_y = -10
                     self.hit_cooldown = 18
 
@@ -164,6 +167,7 @@ class Game:
         for coin in self.stage["coins"]:
             if not coin.collected and self.player.rect.colliderect(coin.rect):
                 coin.collected = True
+                self.sounds.play_coin()
 
         for powerup in self.stage.get("powerups", []):
             if not powerup.collected and self.player.rect.colliderect(powerup.rect):
