@@ -61,7 +61,7 @@ class UI:
         title = self.title_font.render("JumpByte", True, WHITE)
         start_hint = self.font.render("Press ENTER to begin", True, WHITE)
         controls = self.font.render(
-            "Move: A/D or arrows | Jump: Space | Pause: P",
+            "Move: A/D or arrows | Jump: Space | Pause: P | M: Mute",
             True,
             WHITE,
         )

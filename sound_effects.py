@@ -9,6 +9,7 @@ import pygame
 class SoundEffects:
     def __init__(self):
         self.enabled = False
+        self.muted = False
 
         try:
             pygame.mixer.quit()
@@ -61,15 +62,15 @@ class SoundEffects:
         return pygame.mixer.Sound(buffer=samples.tobytes())
 
     def play_coin(self):
-        if self.enabled:
+        if self.enabled and not self.muted:
             self.coin_sound.play()
 
     def play_stomp(self):
-        if self.enabled:
+        if self.enabled and not self.muted:
             self.stomp_sound.play()
 
     def play_jump(self):
-        if self.enabled:
+        if self.enabled and not self.muted:
             self.jump_sound.play()
             self.damage_sound = self._make_tone(
                 start_frequency=520,
@@ -78,5 +79,9 @@ class SoundEffects:
                 volume=0.35,
             )
     def play_damage(self):
-        if self.enabled:
+        if self.enabled and not self.muted:
             self.damage_sound.play()
+
+    def toggle_mute(self):
+        self.muted = not self.muted
+        return self.muted

@@ -52,6 +52,8 @@ class Game:
                     and not self.game_won
                 ):
                     self.paused = not self.paused
+                elif event.key == pygame.K_m and self.started:
+                    self.sounds.toggle_mute()
                 elif event.key == pygame.K_r and (
                     self.game_over or self.game_won
                 ):
