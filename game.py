@@ -2,7 +2,13 @@
 
 import pygame
 
-from levels import build_stage_one, build_stage_two, build_stage_three
+from levels import (
+    build_stage_one,
+    build_stage_two,
+    build_stage_three,
+    build_stage_four,
+    build_stage_five,
+)
 from player import Player
 from settings import FPS, SCREEN_HEIGHT, SCREEN_WIDTH, SKY, WINDOW_TITLE
 from ui import UI
@@ -96,6 +102,12 @@ class Game:
         elif self.stage_number == 2:
             self.stage_number = 3
             self.stage = build_stage_three()
+        elif self.stage_number == 3:
+            self.stage_number = 4
+            self.stage = build_stage_four()
+        elif self.stage_number == 4:
+            self.stage_number = 5
+            self.stage = build_stage_five()
         else:
             self.game_won = True
             return
@@ -322,7 +334,7 @@ class Game:
                     world, (235, 250, 255), (x, y - 8), (x - 3, y + 10), 2
                 )
 
-        else:
+        elif self.stage_number == 3:
             # Sunset Castle in the distance
             pygame.draw.ellipse(world, (135, 83, 110), (-80, 405, 700, 180))
             pygame.draw.ellipse(world, (120, 70, 100), (700, 390, 950, 200))
@@ -366,6 +378,93 @@ class Game:
                 (100, 190, 220),
                 [(470, 180), (500, 188), (470, 197)],
             )
+
+        elif self.stage_number == 4:
+            # Frostfall Peaks: icy mountains and snow
+            pygame.draw.circle(world, (225, 245, 255), (1320, 115), 48)
+
+            pygame.draw.polygon(
+                world, (80, 145, 190),
+                [(0, 450), (210, 190), (420, 450)],
+            )
+            pygame.draw.polygon(
+                world, (110, 175, 210),
+                [(260, 450), (560, 150), (850, 450)],
+            )
+            pygame.draw.polygon(
+                world, (75, 135, 185),
+                [(690, 450), (1010, 205), (1300, 450)],
+            )
+            pygame.draw.polygon(
+                world, (105, 165, 205),
+                [(1110, 450), (1390, 170), (1650, 450)],
+            )
+
+            # Snow caps
+            pygame.draw.polygon(
+                world, (240, 250, 255),
+                [(210, 190), (165, 245), (205, 232), (235, 250)],
+            )
+            pygame.draw.polygon(
+                world, (245, 252, 255),
+                [(560, 150), (500, 230), (555, 210), (600, 240)],
+            )
+            pygame.draw.polygon(
+                world, (240, 250, 255),
+                [(1010, 205), (955, 255), (1005, 240), (1040, 260)],
+            )
+            pygame.draw.polygon(
+                world, (245, 252, 255),
+                [(1390, 170), (1335, 235), (1385, 218), (1420, 245)],
+            )
+
+            # Snowflakes
+            for x, y in [
+                (100, 120), (330, 90), (720, 145), (890, 85),
+                (1150, 135), (1490, 95), (570, 210), (1280, 230),
+            ]:
+                pygame.draw.circle(world, (245, 252, 255), (x, y), 3)
+
+        else:
+            # Skyforge Citadel: starry sky and floating towers
+            for x, y, radius in [
+                (100, 90, 3), (260, 155, 2), (440, 75, 3),
+                (620, 125, 2), (820, 80, 3), (1010, 145, 2),
+                (1190, 70, 3), (1420, 125, 2), (1530, 65, 3),
+            ]:
+                pygame.draw.circle(world, (245, 235, 180), (x, y), radius)
+
+            pygame.draw.circle(world, (245, 205, 130), (1320, 175), 52)
+            pygame.draw.circle(world, (255, 225, 165), (1320, 175), 38)
+
+            # Distant floating islands
+            pygame.draw.ellipse(world, (75, 95, 145), (90, 340, 300, 55))
+            pygame.draw.polygon(
+                world, (65, 80, 125),
+                [(140, 365), (340, 365), (290, 435), (190, 435)],
+            )
+            pygame.draw.ellipse(world, (85, 100, 155), (1030, 355, 350, 55))
+            pygame.draw.polygon(
+                world, (65, 80, 125),
+                [(1090, 378), (1320, 378), (1265, 445), (1145, 445)],
+            )
+
+            # Citadel towers in the distance
+            pygame.draw.rect(world, (70, 68, 125), (470, 265, 95, 225))
+            pygame.draw.polygon(
+                world, (95, 88, 155),
+                [(455, 265), (580, 265), (518, 195)],
+            )
+            pygame.draw.rect(world, (70, 68, 125), (620, 320, 70, 170))
+            pygame.draw.polygon(
+                world, (95, 88, 155),
+                [(608, 320), (702, 320), (655, 260)],
+            )
+
+            # Glowing windows
+            pygame.draw.rect(world, (255, 215, 115), (500, 315, 22, 35))
+            pygame.draw.rect(world, (255, 215, 115), (535, 315, 22, 35))
+            pygame.draw.rect(world, (130, 225, 255), (643, 365, 18, 30))
 
     def draw(self):
         self.screen.fill(SKY)

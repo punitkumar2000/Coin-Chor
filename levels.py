@@ -1,4 +1,4 @@
-"""Stage layouts. The other two stages are added in later project days."""
+"""Layouts for all five JumpByte worlds."""
 
 from enemy import Boss, Enemy
 from objects import Coin, Platform, PowerUp
@@ -13,15 +13,28 @@ def build_stage_one():
         Platform(920, 380, 150),
         Platform(1170, 410, 170),
     ]
-    coins = [Coin(x, y) for x, y in [(260, 370), (490, 300), (750, 370), (1060, 315), (1320, 375)]]
+    coins = [
+        Coin(x, y)
+        for x, y in [
+            (260, 370), (490, 300), (750, 370),
+            (1060, 315), (1320, 375),
+        ]
+    ]
     powerups = [PowerUp(740, 370)]
     enemies = [Enemy(560, 460, 520, 650)]
-    stage_info = {
-    "name": "Green Meadow",
-    "number": 1,
-    "background": (155, 215, 245),
+    info = {
+        "name": "Green Meadow",
+        "number": 1,
+        "background": (155, 215, 245),
     }
-    return {"platforms": platforms, "coins": coins, "powerups": powerups, "enemies": enemies, "info": stage_info}
+    return {
+        "platforms": platforms,
+        "coins": coins,
+        "powerups": powerups,
+        "enemies": enemies,
+        "info": info,
+    }
+
 
 def build_stage_two():
     platforms = [
@@ -33,36 +46,29 @@ def build_stage_two():
         Platform(1090, 395, 150),
         Platform(1360, 335, 170),
     ]
-
     coins = [
         Coin(x, y)
         for x, y in [
-            (205, 375),
-            (415, 310),
-            (660, 370),
-            (895, 290),
-            (1135, 360),
-            (1415, 300),
+            (205, 375), (415, 310), (660, 370),
+            (895, 290), (1135, 360), (1415, 300),
         ]
     ]
-
     enemies = [
         Enemy(520, 460, 470, 590),
         Enemy(1030, 460, 970, 1080),
     ]
-
-    stage_info = {
-    "name": "Moonlit Cave",
-    "number": 2,
-    "background": (45, 35, 75),
+    info = {
+        "name": "Moonlit Cave",
+        "number": 2,
+        "background": (45, 35, 75),
     }
-
     return {
         "platforms": platforms,
         "coins": coins,
         "enemies": enemies,
-        "info": stage_info,
+        "info": info,
     }
+
 
 def build_stage_three():
     platforms = [
@@ -74,33 +80,97 @@ def build_stage_three():
         Platform(1160, 400, 150),
         Platform(1390, 335, 170),
     ]
-
     coins = [
         Coin(x, y)
         for x, y in [
-            (210, 375),
-            (445, 305),
-            (705, 370),
-            (945, 295),
-            (1205, 365),
-            (1440, 300),
+            (210, 375), (445, 305), (705, 370),
+            (945, 295), (1205, 365), (1440, 300),
         ]
     ]
-
     enemies = [
         Enemy(520, 460, 470, 620),
         Boss(850, 442, 850, 1100),
     ]
-
-    stage_info = {
+    info = {
         "name": "Sunset Castle",
         "number": 3,
         "background": (112, 84, 126),
     }
-
     return {
         "platforms": platforms,
         "coins": coins,
         "enemies": enemies,
-        "info": stage_info,
+        "info": info,
+    }
+
+
+def build_stage_four():
+    platforms = [
+        Platform(0, 490, 1600, 50),
+        Platform(170, 410, 130),
+        Platform(380, 340, 140),
+        Platform(610, 400, 150),
+        Platform(840, 325, 140),
+        Platform(1080, 390, 150),
+        Platform(1340, 335, 170),
+    ]
+    coins = [
+        Coin(x, y)
+        for x, y in [
+            (210, 375), (425, 305), (660, 365),
+            (880, 290), (1130, 355), (1400, 300),
+        ]
+    ]
+    powerups = [PowerUp(660, 365)]
+    enemies = [
+        Enemy(500, 460, 450, 590),
+        Enemy(1020, 460, 960, 1080),
+    ]
+    info = {
+        "name": "Frostfall Peaks",
+        "number": 4,
+        "background": (175, 220, 240),
+    }
+    return {
+        "platforms": platforms,
+        "coins": coins,
+        "powerups": powerups,
+        "enemies": enemies,
+        "info": info,
+    }
+
+
+def build_stage_five():
+    platforms = [
+        Platform(0, 490, 1600, 50),
+        Platform(150, 410, 140),
+        Platform(350, 345, 150),
+        Platform(590, 405, 150),
+        Platform(830, 335, 150),
+        Platform(1080, 400, 160),
+        Platform(1340, 330, 180),
+    ]
+    coins = [
+        Coin(x, y)
+        for x, y in [
+            (195, 375), (395, 310), (640, 370),
+            (875, 300), (1130, 365), (1400, 295),
+        ]
+    ]
+    powerups = [PowerUp(1130, 365)]
+    enemies = [
+        Enemy(520, 460, 470, 650),
+        Boss(960, 442, 900, 1220),
+    ]
+    info = {
+        "name": "Skyforge Citadel",
+        "number": 5,
+        "background": (45, 55, 105),
+    }
+    return {
+        "platforms": platforms,
+        "coins": coins,
+        "powerups": powerups,
+        "enemies": enemies,
+        "info": info,
     }

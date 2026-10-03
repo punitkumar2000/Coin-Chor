@@ -120,9 +120,9 @@ class Boss(Enemy):
 
         self.rect = pygame.Rect(x, y, 64, 48)
         self.ground_y = y
-        self.speed = 2
+        self.speed = 1
         self.jump_delay = 90
-        self.shoot_delay = 70
+        self.shoot_delay = 110
 
         self.max_health = 3
         self.health = self.max_health
@@ -130,9 +130,9 @@ class Boss(Enemy):
 
     def update(self):
         if self.health == 1:
-            self.speed = 3
-            self.shoot_delay = 45
-            self.jump_delay = 60
+            self.speed = 2
+            self.shoot_delay = 75
+            self.jump_delay = 75
 
         super().update()
 

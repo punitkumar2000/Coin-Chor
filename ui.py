@@ -120,7 +120,7 @@ class UI:
             (surface.get_width() // 2 - 350, 170),
         )
         title = self.title_font.render("You Win!", True, WHITE)
-        hint = self.font.render("You finished all three worlds! Press R to play again", True, WHITE)
+        hint = self.font.render("You finished all five worlds! Press R to play again", True, WHITE)
         surface.blit(title, title.get_rect(center=(surface.get_width() // 2, 235)))
         surface.blit(hint, hint.get_rect(center=(surface.get_width() // 2, 290)))
 
