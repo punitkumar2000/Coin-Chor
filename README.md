@@ -1,18 +1,30 @@
 # JumpByte
 
-JumpByte is an original 2D platformer made with Python and Pygame. Play as a rat, explore three worlds, collect coins and a speed-boost power-up, and avoid the cat enemy.
+JumpByte is an original 2D platformer built with Python and Pygame. Play as a rat, explore five themed worlds, collect coins, use speed boosts, stomp enemy cats, and defeat the final boss.
 
-This is an educational, AI-assisted project. The leader integrated the code and managed the daily commits and pushes. Team members prepared to explain and demonstrate assigned modules.
+The game uses original Pygame-drawn characters and scenery with procedurally generated sound effects. It does not use Mario characters, names, sprites, or sounds.
 
 ## Features
 
-- Three worlds: Green Meadow, Moonlit Cave, and Sunset Castle
+- Five worlds: Green Meadow, Moonlit Cave, Sunset Castle, Frostfall Peaks, and Skyforge Citadel
 - Rat character with movement, jumping, gravity, and platform collisions
-- Cat enemy with patrol and projectile behavior
-- Coins and a temporary speed-boost power-up
-- Lives, respawn, game-over, and restart
-- Different backgrounds and original Pygame-drawn scenery
-- Pause and resume
+- Cat enemies that patrol and fire projectiles
+- Stomping attacks, including a health-based final boss with an enraged phase
+- Coins required to unlock each world’s exit
+- Speed-boost power-ups
+- Mid-world checkpoints, lives, respawn, game-over, and restart
+- Original scenery, platform details, animated characters, and visual effects
+- Generated sound effects for collecting coins, jumping, stomping, and taking damage
+- `M` key to mute or unmute sound effects
+- Start, pause, game-over, and victory screens
+
+## Worlds and objectives
+
+1. **Green Meadow** — collect every coin and reach the exit.
+2. **Moonlit Cave** — collect every coin and avoid the patrolling cats.
+3. **Sunset Castle** — collect every coin and reach the exit.
+4. **Frostfall Peaks** — collect every coin and reach the exit.
+5. **Skyforge Citadel** — collect every coin, defeat the final boss, and reach the exit to win.
 
 ## Controls
 
@@ -22,11 +34,12 @@ This is an educational, AI-assisted project. The leader integrated the code and 
 | A / D or Left / Right arrows | Move |
 | Space, Up arrow, or W | Jump |
 | P | Pause or resume |
+| M | Mute or unmute sound effects |
 | R | Restart after game over or winning |
 
-Reach the flag at the right side of each world to continue. Coins are optional.
+## Setup and run
 
-## Run on macOS
+### macOS
 
 From the project folder, open Terminal and run:
 
@@ -35,4 +48,38 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python main.py
+```
 
+### Windows PowerShell
+
+From the project folder, open PowerShell and run:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python main.py
+```
+
+## Project files
+
+| File | Purpose |
+| --- | --- |
+| `main.py` | Starts the game |
+| `game.py` | Game loop, events, stages, collisions, and drawing |
+| `player.py` | Player movement, jumping, and animation |
+| `enemy.py` | Cat enemies, projectiles, and boss |
+| `objects.py` | Platforms, coins, and power-ups |
+| `levels.py` | Layouts and data for the five worlds |
+| `ui.py` | Start screen, HUD, pause, game-over, and win screens |
+| `sound_effects.py` | Generated sound effects and mute control |
+| `settings.py` | Shared game settings |
+| `workload.py` | Team task and workload reference |
+
+## Python concepts used
+
+The project uses variables, conditionals, loops, functions, modules, lists, tuples, dictionaries, classes, objects, and inheritance. `Boss` inherits from `Enemy`; the game stores platforms, coins, enemies, and power-ups in collections.
+
+## Project note
+
+This is an educational, AI-assisted project. The project leader integrated and tested the game code. Team members should describe their actual contributions and explain only the modules they understand.
