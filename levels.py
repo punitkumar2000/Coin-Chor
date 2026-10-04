@@ -89,7 +89,7 @@ def build_stage_three():
     ]
     enemies = [
         Enemy(520, 460, 470, 620),
-        Boss(850, 442, 850, 1100),
+        Enemy(850, 460, 820, 1080),
     ]
     info = {
         "name": "Sunset Castle",
